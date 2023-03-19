@@ -1,0 +1,15 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  image-resizer-api:
+    build: ./
+    volumes:
+      - ./images:/app/images
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
