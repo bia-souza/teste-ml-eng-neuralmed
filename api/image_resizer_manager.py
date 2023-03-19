@@ -2,6 +2,14 @@ import pika
 from flask import Flask, request, jsonify
 from ..gateway.img_resizer_queue import ImageResizer
 
+'''
+    Class responsible to manage API, containing methods:
+    - start: start a Flask API and call the gateway responsible to manager queue in application
+    - run: call the routes presents in API and run the API
+    - _register_routes: private method that register all routes presents in API
+    - _handle_resize_request: private static method that publish image in queue and handling http error
+'''
+
 class ImageResizerAPI:
     def __init__(self):
         self.app = Flask(__name__)
