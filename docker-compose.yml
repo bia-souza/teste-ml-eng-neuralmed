@@ -5,11 +5,23 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - network
   image-resizer-api:
     build: ./
+    restart: on-failure
     volumes:
       - ./images:/app/images
     ports:
       - "5000:5000"
+    environment:
+      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+    links:
+      - rabbitmq
     depends_on:
       - rabbitmq
+    networks:
+      - network
+networks: 
+  network: {}
+    

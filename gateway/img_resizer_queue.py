@@ -19,7 +19,15 @@ class ImageResizer:
         self.queue_name = 'image_queue'
 
     def start(self):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.host))
+        amqp_url = os.environ['AMQP_URL']
+        parameters = pika.URLParameters(amqp_url)
+        #self.connection = pika.SelectConnection(parameters)
+        #credentials = pika.PlainCredentials('guest', 'guest')
+        #parameters = pika.ConnectionParameters(self.host,
+        #                               5672,
+        #                               '/',
+        #                               credentials)
+        self.connection = pika.BlockingConnection(parameters)
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=self.queue_name, durable=True)
         self.channel.basic_consume(queue=self.queue_name, on_message_callback=self._callback, auto_ack=True)

@@ -1,6 +1,6 @@
 import pika
 from flask import Flask, request, jsonify
-from ..gateway.img_resizer_queue import ImageResizer
+from gateway.img_resizer_queue import ImageResizer
 
 '''
     Class responsible to manage API, containing methods:
@@ -13,7 +13,7 @@ from ..gateway.img_resizer_queue import ImageResizer
 class ImageResizerAPI:
     def __init__(self):
         self.app = Flask(__name__)
-        self.resizer = ImageResizer(host='localhost')
+        self.resizer = ImageResizer(host='rabbitmq')
 
     def start(self):
         self.resizer.start()
